@@ -8,7 +8,7 @@ npm run dev
 
 ## Objectives
 
-This is a simple Express service that operates on [books' fake API](https://freetestapi.com/api/v1/book)
+This is a simple Express service that serves functions on [books' fake API data](https://freetestapi.com/api/v1/book) via MongoDB
 
 ## Tech Stack
 
