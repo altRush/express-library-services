@@ -1,37 +1,15 @@
-import axios from 'axios';
 import { Request, Response } from 'express';
-import { Book } from '../types/Book';
+import getBooksDataService, {
+	GetBooksDataService
+} from '../services/get-books-data.service';
 
-export const getAllBooksController = async (_req: Request, res: Response) => {
-	try {
-		const { data }: { data: Book[] } = await axios(
-			'https://freetestapi.com/api/v1/books'
-		);
+export class GetBooksDataController {
+	constructor(private getBooksDataServices: GetBooksDataService) {}
 
-		res.status(200).json(data);
-	} catch (e) {
-		if (e instanceof Error) {
-			res.status(500).json({
-				errorMessage: e.message
-			});
-		}
-	}
-};
+	getAllBooks = async (_req: Request, res: Response) => {
+		const books = await this.getBooksDataServices.fetchAllBooks();
+		res.status(200).json(books);
+	};
+}
 
-export const getSingleBookController = async (req: Request, res: Response) => {
-	try {
-		const bookId = req.params.bookId;
-
-		const { data }: { data: Book } = await axios(
-			`https://freetestapi.com/api/v1/books/${bookId}`
-		);
-
-		res.status(200).json(data);
-	} catch (e) {
-		if (e instanceof Error) {
-			res.status(500).json({
-				errorMessage: e.message
-			});
-		}
-	}
-};
+export default new GetBooksDataController(getBooksDataService);
