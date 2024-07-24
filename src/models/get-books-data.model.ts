@@ -1,7 +1,8 @@
 import db from '../services/db.service';
-import { Collection, Db } from 'mongodb';
+import { Collection, Db, SortDirection } from 'mongodb';
 import { Book } from '../types/Book';
 import dotenv from 'dotenv';
+import { QueryParams } from '../types/QueryParams';
 
 dotenv.config();
 
@@ -11,8 +12,20 @@ export class GetBooksDataModel {
 		this.collection = this.dbClient.collection(collectionName);
 	}
 
-	async fetchAllBooks(): Promise<Book[]> {
-		const allBooks = await this.collection.find<Book>({}).toArray();
+	async fetchAllBooks(queryParams: QueryParams): Promise<Book[]> {
+		const { limit, searchByName, sort, order } = queryParams;
+
+		const filter = searchByName
+			? {
+					title: searchByName
+			  }
+			: {};
+
+		const allBooks = await this.collection
+			.find<Book>(filter)
+			.sort(sort as string, order as SortDirection)
+			.limit(limit || 0)
+			.toArray();
 		return allBooks;
 	}
 
@@ -21,7 +34,6 @@ export class GetBooksDataModel {
 			.find<Book>({
 				id: bookId
 			})
-			.limit(1)
 			.toArray();
 
 		return book[0];
