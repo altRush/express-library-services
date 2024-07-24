@@ -5,10 +5,7 @@ import getBooksDataController from '../controllers/get-books-data.controller';
 const router = Router();
 
 router.get('/home', homeContorller);
-router.get('/get-all-books', getBooksDataController.getAllBooks);
-router.get(
-	'/get-single-book-by-id/:bookId',
-	getBooksDataController.getSingleBook
-);
+router.get('/books', getBooksDataController.getAllBooks);
+router.get('/books/:bookId', getBooksDataController.getSingleBook);
 
 export default router;
