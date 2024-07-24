@@ -1,4 +1,4 @@
 export interface BorrowBookInfoRequest {
-	bookId: number;
-	personName: string;
+  bookId: number;
+  personName: string;
 }

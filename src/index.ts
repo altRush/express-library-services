@@ -13,9 +13,9 @@ app.use(bodyParser.json());
 app.use('/', router);
 
 app.get('/', (req, res) => {
-	res.send('Express + TypeScript Server');
+  res.send('Express + TypeScript Server');
 });
 
 app.listen(port, () => {
-	console.log(`[server]: Server is running at http://localhost:${port}`);
+  console.log(`[server]: Server is running at http://localhost:${port}`);
 });
