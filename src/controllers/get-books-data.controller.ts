@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import getBooksDataService, {
 	GetBooksDataService
 } from '../services/get-books-data.service';
-import { SortDirection } from '../enums/SortDirection';
+import { SortDirection } from '../enums/sort-direction.enum';
+import HttpStatusCode from '../enums/http-statuses.enum';
 
 export class GetBooksDataController {
 	constructor(private getBooksDataService: GetBooksDataService) {}
@@ -19,7 +20,7 @@ export class GetBooksDataController {
 
 		if (order) {
 			if (!Object.values(SortDirection).includes(order)) {
-				return res.status(400).json({
+				return res.status(HttpStatusCode.BAD_REQUEST).json({
 					error: 'Incorrect "order" value'
 				});
 			}
@@ -32,13 +33,13 @@ export class GetBooksDataController {
 			order
 		});
 
-		res.status(200).json(books);
+		res.status(HttpStatusCode.OK).json(books);
 	};
 
 	getSingleBook = async (req: Request, res: Response): Promise<void> => {
 		const bookIdAsNumber = +req.params.bookId;
 		const book = await this.getBooksDataService.fetchSingleBook(bookIdAsNumber);
-		res.status(200).json(book);
+		res.status(HttpStatusCode.OK).json(book);
 	};
 }
 
