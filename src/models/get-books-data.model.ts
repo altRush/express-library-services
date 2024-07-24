@@ -11,9 +11,20 @@ export class GetBooksDataModel {
 		this.collection = this.dbClient.collection(collectionName);
 	}
 
-	async fetchAllBooks() {
+	async fetchAllBooks(): Promise<Book[]> {
 		const allBooks = await this.collection.find<Book>({}).toArray();
 		return allBooks;
+	}
+
+	async fetchSingleBook(bookId: number): Promise<Book> {
+		const book = await this.collection
+			.find<Book>({
+				id: bookId
+			})
+			.limit(1)
+			.toArray();
+
+		return book[0];
 	}
 }
 
