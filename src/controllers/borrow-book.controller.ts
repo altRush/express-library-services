@@ -27,6 +27,24 @@ export class BorrowBookController {
       borrowId,
     });
   };
+
+  getBorrowBookRecord = async (req: Request, res: Response) => {
+    const { success, statusCode, borrowBookRecord } =
+      await this.borrowBookService.getBorrowBookRecord(req.params.personName);
+
+    if (!success && statusCode === HttpStatusCode.NOT_FOUND) {
+      return res.status(HttpStatusCode.NOT_FOUND).json({
+        success,
+        message: HttpResponseMessages.GET_BORROW_BOOK_RECORD_NOT_FOUND,
+      });
+    }
+
+    return res.status(HttpStatusCode.OK).json({
+      success,
+      messaage: HttpResponseMessages.GET_BORROW_BOOK_RECORD_SUCCESS,
+      borrowBookRecord,
+    });
+  };
 }
 
 export default new BorrowBookController(borrowBookService);

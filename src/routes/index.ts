@@ -8,6 +8,10 @@ const router = Router();
 router.get('/home', homeContorller);
 router.get('/books', getBooksDataController.getAllBooks);
 router.get('/books/:bookId', getBooksDataController.getSingleBook);
+router.get(
+  '/borrow-book-record/:personName',
+  borrowBookController.getBorrowBookRecord,
+);
 
 router.post('/borrow-book', borrowBookController.borrowBook);
 

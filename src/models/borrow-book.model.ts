@@ -2,6 +2,8 @@ import { Collection, Db } from 'mongodb';
 import dotenv from 'dotenv';
 import db from '../services/db.service';
 import { BorrowBookInfoRequest } from '../types/borrow-book.interface';
+import { HttpResponseMessages } from '../enums/http-response-messages.enum';
+import HttpStatusCode from '../enums/http-statuses.enum';
 
 dotenv.config();
 
@@ -12,21 +14,51 @@ export class BorrowBookModel {
   }
 
   async borrowBook(borrowBookInfo: BorrowBookInfoRequest) {
-    const { acknowledged, insertedId } = await this.collection.insertOne({
+    return await this.collection.insertOne({
       book_id: borrowBookInfo.bookId,
       person_name: borrowBookInfo.personName,
       date: new Date(),
     });
+  }
 
-    if (!acknowledged) {
+  async getBorrowBookRecordByPersonName(personName: string) {
+    const pipeline = [
+      {
+        $match: {
+          person_name: personName,
+        },
+      },
+      {
+        $lookup: {
+          from: 'store',
+          localField: 'book_id',
+          foreignField: 'id',
+          as: 'borrowDetails',
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          person_name: 1,
+          title: '$borrowDetails.title',
+          date: 1,
+        },
+      },
+    ];
+
+    const borrowBookRecord = await this.collection
+      .aggregate(pipeline)
+      .toArray();
+
+    if (borrowBookRecord.length < 1) {
       return {
-        success: false,
+        statusCode: HttpStatusCode.NOT_FOUND,
       };
     }
 
     return {
-      success: true,
-      borrowId: insertedId,
+      statusCode: HttpStatusCode.OK,
+      borrowBookRecord,
     };
   }
 }

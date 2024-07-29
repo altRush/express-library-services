@@ -1,3 +1,5 @@
+import { HttpResponseMessages } from '../enums/http-response-messages.enum';
+import HttpStatusCode from '../enums/http-statuses.enum';
 import borrowBookModel, { BorrowBookModel } from '../models/borrow-book.model';
 import { BorrowBookInfoRequest } from '../types/borrow-book.interface';
 
@@ -5,19 +7,36 @@ export class BorrowBookService {
   constructor(private borrowBookModel: BorrowBookModel) {}
 
   async borrowBook(borrowBookInfo: BorrowBookInfoRequest) {
-    const { success, borrowId } = await this.borrowBookModel.borrowBook(
+    const { acknowledged, insertedId } = await this.borrowBookModel.borrowBook(
       borrowBookInfo,
     );
 
-    if (!success) {
+    if (!acknowledged) {
       return {
-        success,
+        success: false,
       };
     }
 
     return {
-      success,
-      borrowId,
+      success: true,
+      borrowId: insertedId,
+    };
+  }
+
+  async getBorrowBookRecord(personName: string) {
+    const { statusCode, borrowBookRecord } =
+      await this.borrowBookModel.getBorrowBookRecordByPersonName(personName);
+
+    if (statusCode === HttpStatusCode.NOT_FOUND) {
+      return {
+        success: false,
+        statusCode,
+      };
+    }
+
+    return {
+      success: true,
+      borrowBookRecord,
     };
   }
 }
