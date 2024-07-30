@@ -1,4 +1,3 @@
-import { HttpResponseMessages } from '../enums/http-response-messages.enum';
 import HttpStatusCode from '../enums/http-statuses.enum';
 import borrowBookModel, { BorrowBookModel } from '../models/borrow-book.model';
 import { BorrowBookInfoRequest } from '../types/borrow-book.interface';
@@ -37,6 +36,23 @@ export class BorrowBookService {
     return {
       success: true,
       borrowBookRecord,
+    };
+  }
+
+  async getLimitExceededBorrowwers(limitDays: number) {
+    const { statusCode, limitExceededBorrowers } =
+      await this.borrowBookModel.getLimitExceededBorrowwers(limitDays);
+
+    if (statusCode === HttpStatusCode.NOT_FOUND) {
+      return {
+        success: false,
+        statusCode,
+      };
+    }
+
+    return {
+      success: true,
+      limitExceededBorrowers,
     };
   }
 }

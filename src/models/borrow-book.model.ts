@@ -61,6 +61,52 @@ export class BorrowBookModel {
       borrowBookRecord,
     };
   }
+
+  async getLimitExceededBorrowwers(limitDays: number) {
+    const pipeline = [
+      {
+        $match: {
+          $expr: {
+            $gte: [
+              {
+                $dateDiff: {
+                  startDate: '$date',
+                  endDate: '$$NOW',
+                  unit: 'day',
+                },
+              },
+              limitDays,
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          person_name: 1,
+          date: 1,
+          dateDiff: {
+            $dateDiff: { startDate: '$date', endDate: '$$NOW', unit: 'day' },
+          },
+        },
+      },
+    ];
+
+    const limitExceededBorrowers = await this.collection
+      .aggregate(pipeline)
+      .sort({ dateDiff: -1 })
+      .toArray();
+
+    if (limitExceededBorrowers.length < 1) {
+      return {
+        statusCode: HttpStatusCode.NOT_FOUND,
+      };
+    }
+
+    return {
+      statusCode: HttpStatusCode.OK,
+      limitExceededBorrowers,
+    };
+  }
 }
 
 export default new BorrowBookModel(

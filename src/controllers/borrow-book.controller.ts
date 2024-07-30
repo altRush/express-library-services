@@ -45,6 +45,34 @@ export class BorrowBookController {
       borrowBookRecord,
     });
   };
+
+  getLimitExceededBorrowers = async (req: Request, res: Response) => {
+    const limitExceedInDaysInNumber = +req.params.limitExceedInDays;
+
+    if (isNaN(limitExceedInDaysInNumber)) {
+      return res.status(HttpStatusCode.BAD_REQUEST).json({
+        success: false,
+        message: HttpResponseMessages.GET_EXCEEDED_LIMIT_BORROWERS_NAN,
+      });
+    }
+    const { success, statusCode, limitExceededBorrowers } =
+      await this.borrowBookService.getLimitExceededBorrowwers(
+        limitExceedInDaysInNumber,
+      );
+
+    if (!success && statusCode === HttpStatusCode.NOT_FOUND) {
+      return res.status(HttpStatusCode.NOT_FOUND).json({
+        success,
+        message: HttpResponseMessages.GET_EXCEEDED_LIMIT_BORROWERS_NOT_FOUND,
+      });
+    }
+
+    return res.status(HttpStatusCode.OK).json({
+      success,
+      messaage: HttpResponseMessages.GET_BORROW_BOOK_RECORD_SUCCESS,
+      limitExceededBorrowers,
+    });
+  };
 }
 
 export default new BorrowBookController(borrowBookService);

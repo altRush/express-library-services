@@ -12,6 +12,10 @@ router.get(
   '/borrow-book-record/:personName',
   borrowBookController.getBorrowBookRecord,
 );
+router.get(
+  '/limit-exceeded-borrowers/:limitExceedInDays',
+  borrowBookController.getLimitExceededBorrowers,
+);
 
 router.post('/borrow-book', borrowBookController.borrowBook);
 
