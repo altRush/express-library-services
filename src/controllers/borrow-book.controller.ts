@@ -1,10 +1,10 @@
+import HttpStatusCode from '../constants/http-statuses.enum';
 import { Request, Response } from 'express';
+import { BorrowBookInfoRequest } from '../interfaces/borrow-book.interface';
+import { HttpResponseMessages } from '../constants/http-response-messages.enum';
 import borrowBookService, {
   BorrowBookService,
 } from '../services/borrow-book.service';
-import { BorrowBookInfoRequest } from '../types/borrow-book.interface';
-import { HttpResponseMessages } from '../enums/http-response-messages.enum';
-import HttpStatusCode from '../enums/http-statuses.enum';
 
 export class BorrowBookController {
   constructor(private borrowBookService: BorrowBookService) {}

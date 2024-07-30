@@ -1,8 +1,8 @@
+import { Book } from '../interfaces/book.interface';
+import { QueryParams } from '../interfaces/query-params.interface';
 import getBooksDataModel, {
   GetBooksDataModel,
 } from '../models/get-books-data.model';
-import { Book } from '../types/book.interface';
-import { QueryParams } from '../types/query-params.interface';
 
 export class GetBooksDataService {
   constructor(private getBooksDataModel: GetBooksDataModel) {}

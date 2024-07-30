@@ -1,6 +1,6 @@
-import HttpStatusCode from '../enums/http-statuses.enum';
+import HttpStatusCode from '../constants/http-statuses.enum';
+import { BorrowBookInfoRequest } from '../interfaces/borrow-book.interface';
 import borrowBookModel, { BorrowBookModel } from '../models/borrow-book.model';
-import { BorrowBookInfoRequest } from '../types/borrow-book.interface';
 
 export class BorrowBookService {
   constructor(private borrowBookModel: BorrowBookModel) {}

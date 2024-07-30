@@ -1,8 +1,8 @@
 import db from '../services/db.service';
-import { Collection, Db, SortDirection } from 'mongodb';
-import { Book } from '../types/book.interface';
 import dotenv from 'dotenv';
-import { QueryParams } from '../types/query-params.interface';
+import { Collection, Db, SortDirection } from 'mongodb';
+import { Book } from '../interfaces/book.interface';
+import { QueryParams } from '../interfaces/query-params.interface';
 
 dotenv.config();
 

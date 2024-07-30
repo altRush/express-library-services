@@ -1,5 +1,5 @@
-import { Db, MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
+import { Db, MongoClient } from 'mongodb';
 
 dotenv.config();
 
@@ -14,6 +14,6 @@ const dbName = process.env.MONGODB_DBNAME!;
   await client.connect();
 })();
 
-const db = client.db(dbName);
+const db: Db = client.db(dbName);
 
 export default db;

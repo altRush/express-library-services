@@ -1,9 +1,9 @@
+import HttpStatusCode from '../constants/http-statuses.enum';
 import { Request, Response } from 'express';
 import getBooksDataService, {
   GetBooksDataService,
 } from '../services/get-books-data.service';
-import { SortDirection } from '../enums/sort-direction.enum';
-import HttpStatusCode from '../enums/http-statuses.enum';
+import { SortDirection } from '../constants/sort-direction.enum';
 
 export class GetBooksDataController {
   constructor(private getBooksDataService: GetBooksDataService) {}

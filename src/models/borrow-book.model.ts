@@ -1,9 +1,8 @@
-import { Collection, Db } from 'mongodb';
 import dotenv from 'dotenv';
 import db from '../services/db.service';
-import { BorrowBookInfoRequest } from '../types/borrow-book.interface';
-import { HttpResponseMessages } from '../enums/http-response-messages.enum';
-import HttpStatusCode from '../enums/http-statuses.enum';
+import HttpStatusCode from '../constants/http-statuses.enum';
+import { Collection, Db } from 'mongodb';
+import { BorrowBookInfoRequest } from '../interfaces/borrow-book.interface';
 
 dotenv.config();
 
